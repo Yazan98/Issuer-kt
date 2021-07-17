@@ -1,2 +1,3 @@
 rootProject.name = "Issuer-kt"
 include ':app'
+include ':issuer'
