@@ -1,6 +1,7 @@
 package com.yazantarifi.issuer.android.impl
 
 import android.os.Bundle
+import androidx.navigation.NavGraph
 
 interface IssuerScreenImplementation {
 
@@ -12,7 +13,11 @@ interface IssuerScreenImplementation {
 
     fun moveToStartScreen(screenName: Int)
 
+    fun addStartFragmentArguments(graph: NavGraph?)
+
     fun isEmailDialogEnabled(): Boolean
+
+    fun updateTextInput(newText: String?)
 
     fun showEmailDialogInput()
 

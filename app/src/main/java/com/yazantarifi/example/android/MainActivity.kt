@@ -9,6 +9,7 @@ import com.yazantarifi.issuer.android.data.IssueInfoType
 import com.yazantarifi.issuer.android.data.IssuesScreenMode
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.screen_main)
@@ -25,7 +26,9 @@ class MainActivity : AppCompatActivity() {
                 IssuerIntent isImagesAttachmentEnabled true
                 IssuerIntent isPrivacyPolicyEnabled true
                 IssuerIntent isUserEmailSelectionEnabled true
+                IssuerIntent textInputHint "Brefly Explain What is The problem also Provide Us With Steps To ReProduce if Possible"
             }
         }
     }
+
 }

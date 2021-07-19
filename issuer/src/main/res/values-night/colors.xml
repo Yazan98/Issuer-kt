@@ -10,7 +10,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="error_color">#FF0000</color>
-    <color name="image_color">#000000</color>
-    <color name="image_color_inverse">#FFFFFF</color>
-
+    <color name="image_color">#FFFFFF</color>
+    <color name="image_color_inverse">#000000</color>
 </resources>

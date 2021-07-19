@@ -4,4 +4,7 @@
     <string name="hint_email">Enter Your Email Address</string>
     <string name="email_message">Please Insert Your Email To Contact You For Any Required Steps</string>
     <string name="email_title">User Email</string>
+    <string name="explain_problem">Please Explain the Problem Here</string>
+    <string name="add_image">Add Image</string>
+    <string name="next">Next</string>
 </resources>

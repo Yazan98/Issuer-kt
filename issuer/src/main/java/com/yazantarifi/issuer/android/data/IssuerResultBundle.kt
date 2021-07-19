@@ -21,6 +21,14 @@ class IssuerResultBundle : Intent(), IssuerResultBundleImplementation {
 
     }
 
+    override fun setUserTextInput(textInput: String?) {
+        this.putExtra(USER_INPUT_TEXT, textInput)
+    }
+
+    override fun getUserTextInput(): String? {
+        return this.getStringExtra(USER_INPUT_TEXT)
+    }
+
     override fun setEmailResult(email: String?) {
         this.putExtra(EMAIL_PATH, email)
     }

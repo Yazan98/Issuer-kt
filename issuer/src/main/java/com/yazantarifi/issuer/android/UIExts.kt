@@ -5,6 +5,8 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.AutoCompleteTextView
+import androidx.navigation.NavArgument
+import androidx.navigation.NavType
 import com.google.android.material.textfield.TextInputEditText
 import com.yazantarifi.android.android.R
 import com.yazantarifi.issuer.android.listeners.EmailSelectionListener
@@ -33,4 +35,18 @@ fun showEmailDialog(context: Context, title: String, message: String, listener: 
         listener.onDialogDismissed()
     }
     builder.show()
+}
+
+fun getStringArgument(value: String): NavArgument {
+    return NavArgument.Builder()
+        .setDefaultValue(value)
+        .setType(NavType.StringType)
+        .build()
+}
+
+fun getBooleanArgument(value: Boolean): NavArgument {
+    return NavArgument.Builder()
+        .setDefaultValue(value)
+        .setType(NavType.BoolType)
+        .build()
 }

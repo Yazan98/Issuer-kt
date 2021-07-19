@@ -4,6 +4,10 @@ interface IssuerResultBundleImplementation {
 
     fun setScreenResults(images: ArrayList<String>?, selectedOption: String?, userTextScreen: String?)
 
+    fun setUserTextInput(textInput: String?)
+
+    fun getUserTextInput(): String?
+
     fun setEmailResult(email: String?)
 
     fun getEmailResult(): String?

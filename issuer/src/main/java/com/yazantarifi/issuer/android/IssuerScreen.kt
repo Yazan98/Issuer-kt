@@ -6,6 +6,7 @@ import android.text.TextUtils
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
+import androidx.navigation.NavGraph
 import androidx.navigation.findNavController
 import com.yazantarifi.android.android.R
 import com.yazantarifi.issuer.android.data.IssuerResultBundle
@@ -16,7 +17,9 @@ import kotlinx.android.synthetic.main.screen_issuer.*
 
 class IssuerScreen : AppCompatActivity(), IssuerScreenImplementation {
 
-    private var screenResults: IssuerResultBundle? = null
+    private val screenResults: IssuerResultBundle? by lazy {
+        IssuerResultBundle()
+    }
 
     companion object {
         const val EMAIL_TITLE_KEY = 0
@@ -46,8 +49,7 @@ class IssuerScreen : AppCompatActivity(), IssuerScreenImplementation {
     }
 
     override fun setupStartScreen(extras: Bundle?) {
-        val screenMode =
-            extras?.getString(IssuerConsts.SCREENS_MODE, "") ?: IssuesScreenMode.DIRECT_REPORT.key
+        val screenMode = extras?.getString(IssuerConsts.SCREENS_MODE, "") ?: IssuesScreenMode.DIRECT_REPORT.key
         if (TextUtils.isEmpty(screenMode)) {
             return
         }
@@ -55,17 +57,43 @@ class IssuerScreen : AppCompatActivity(), IssuerScreenImplementation {
         moveToStartScreen(getStartFragmentId(screenMode))
     }
 
+    override fun updateTextInput(newText: String?) {
+        if (!TextUtils.isEmpty(newText)) {
+            screenResults?.setUserTextInput(newText)
+        }
+    }
+
     override fun moveToStartScreen(screenName: Int) {
         try {
             findNavController(R.id.nav_host_fragment).let { controller ->
                 controller.navInflater.inflate(R.navigation.issuer_graph).let {
                     it.startDestination = screenName
+                    addStartFragmentArguments(it)
                     controller.graph = it
                 }
             }
         } catch (ex: Exception) {
             IssuerConfig.getGlobalListener()?.onErrorTriggered(ex)
         }
+    }
+
+    override fun addStartFragmentArguments(graph: NavGraph?) {
+        val privacyPolicyLink: String = intent?.extras?.getString(IssuerConsts.PRIVACY_POLICY_LINK, "") ?: ""
+        val hintTextField: String = intent?.extras?.getString(IssuerConsts.TEXT_INPUT_HINT, "") ?: ""
+        val deviceInformationMode: String = intent?.extras?.getString(IssuerConsts.DEVICE_INFORMATION_MODE, "") ?: ""
+        val isEventsClickEnabled: Boolean = intent?.extras?.getBoolean(IssuerConsts.IS_EVENTS_CLICK_ENABLED, false) ?: false
+        val isPrivacyPolicyEnabled: Boolean = intent?.extras?.getBoolean(IssuerConsts.IS_PRIVACY_POLICY_ENABLED, false) ?: false
+        val isCollectedInfoEnabled: Boolean = intent?.extras?.getBoolean(IssuerConsts.IS_COLLECTED_INFORMATION_ENABLED, false) ?: false
+        val isImageAttachmentEnabled: Boolean = intent?.extras?.getBoolean(IssuerConsts.IS_IMAGE_ATTACHMENT_ENABLED, false) ?: false
+
+        graph?.addArgument(IssuerConsts.TEXT_INPUT_HINT, getStringArgument(hintTextField))
+        graph?.addArgument(IssuerConsts.PRIVACY_POLICY_LINK, getStringArgument(privacyPolicyLink))
+        graph?.addArgument(IssuerConsts.DEVICE_INFORMATION_MODE, getStringArgument(deviceInformationMode))
+
+        graph?.addArgument(IssuerConsts.IS_EVENTS_CLICK_ENABLED, getBooleanArgument(isEventsClickEnabled))
+        graph?.addArgument(IssuerConsts.IS_PRIVACY_POLICY_ENABLED, getBooleanArgument(isPrivacyPolicyEnabled))
+        graph?.addArgument(IssuerConsts.IS_COLLECTED_INFORMATION_ENABLED, getBooleanArgument(isCollectedInfoEnabled))
+        graph?.addArgument(IssuerConsts.IS_IMAGE_ATTACHMENT_ENABLED, getBooleanArgument(isImageAttachmentEnabled))
     }
 
     override fun getStartFragmentId(screenMode: String): Int {
@@ -99,7 +127,7 @@ class IssuerScreen : AppCompatActivity(), IssuerScreenImplementation {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        finishScreen()
+        finish()
         return super.onOptionsItemSelected(item)
     }
 

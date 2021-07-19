@@ -22,6 +22,7 @@ object IssuerIntent : Intent(), IssuerIntentImplementation {
     private var screenTitle: String? = ""
     private var emailDialogTitle: String? = ""
     private var emailDialogMessage: String? = ""
+    private var textInputHint: String? = ""
 
     /**
      * Determine Which Type Of Information You want To Collect Inside User Report
@@ -111,12 +112,25 @@ object IssuerIntent : Intent(), IssuerIntentImplementation {
      * If Not Used The Screen Will Fill it HardCoded String
      * If Set Will Use The Attached String
      */
-    override fun addEmailDialogMessage(message: String?) {
+    override infix fun addEmailDialogMessage(message: String?) {
         this.emailDialogMessage = message
     }
 
-    override fun addEmailDialogTitle(title: String?) {
+    /**
+     * If The Email Input Dialog Enabled This Will be Executed
+     * If Not Used The Screen Will Fill it HardCoded String
+     * If Set Will Use The Attached String
+     */
+    override infix fun addEmailDialogTitle(title: String?) {
         this.emailDialogTitle = title
+    }
+
+    /**
+     * User Can Write The Problem or The Steps in a Text Field
+     * Here you Can Set the Hint For Text Field
+     */
+    override infix fun textInputHint(hint: String) {
+        this.textInputHint = hint
     }
 
     /**
@@ -141,6 +155,7 @@ object IssuerIntent : Intent(), IssuerIntentImplementation {
             this.putExtra(IssuerConsts.OPTIONS_LIST_INFORMATION, optionsListInformation)
             this.putExtra(IssuerConsts.EMAIL_TITLE, emailDialogTitle)
             this.putExtra(IssuerConsts.EMAIL_MESSAGE, emailDialogMessage)
+            this.putExtra(IssuerConsts.TEXT_INPUT_HINT, textInputHint)
         }
     }
 

@@ -34,6 +34,8 @@ interface IssuerIntentImplementation {
 
     fun addOptionsListInformation(options: IssuerOptionsInfo)
 
+    fun textInputHint(hint: String)
+
     fun build(context: FragmentActivity?): Intent
 
 }
