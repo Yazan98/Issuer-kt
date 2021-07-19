@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/issuer_graph.xml"
+    app:startDestination="@id/categoriesFragment">
+
+    <fragment
+        android:id="@+id/categoriesFragment"
+        tools:layout="@layout/fragment_categories"
+        android:name="com.yazantarifi.issuer.android.fragments.CategoriesFragment"
+        android:label="CategoriesFragment" >
+        <action
+            android:id="@+id/action_categoriesFragment_to_directIssueFragment"
+            app:destination="@id/directIssueFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/directIssueFragment"
+        tools:layout="@layout/fragment_direct_issues"
+        android:name="com.yazantarifi.issuer.android.fragments.DirectIssueFragment"
+        android:label="DirectIssueFragment" />
+</navigation>
