@@ -24,6 +24,10 @@ interface IssuerIntentImplementation {
 
     fun addPrivacyPolicyLink(privacyPolicyLink: String?)
 
+    fun addEmailDialogTitle(title: String?)
+
+    fun addEmailDialogMessage(message: String?)
+
     fun addScreenTitle(title: String?)
 
     fun addScreensMode(flow: IssuesScreenMode)

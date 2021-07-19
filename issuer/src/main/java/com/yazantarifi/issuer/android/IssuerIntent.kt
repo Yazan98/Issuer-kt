@@ -20,6 +20,8 @@ object IssuerIntent : Intent(), IssuerIntentImplementation {
     private var privacyPolicyLink: String? = ""
     private var privacyPolicy: String? = ""
     private var screenTitle: String? = ""
+    private var emailDialogTitle: String? = ""
+    private var emailDialogMessage: String? = ""
 
     /**
      * Determine Which Type Of Information You want To Collect Inside User Report
@@ -105,6 +107,19 @@ object IssuerIntent : Intent(), IssuerIntentImplementation {
     }
 
     /**
+     * If The Email Input Dialog Enabled This Will be Executed
+     * If Not Used The Screen Will Fill it HardCoded String
+     * If Set Will Use The Attached String
+     */
+    override fun addEmailDialogMessage(message: String?) {
+        this.emailDialogMessage = message
+    }
+
+    override fun addEmailDialogTitle(title: String?) {
+        this.emailDialogTitle = title
+    }
+
+    /**
      * Generate Full Intent for The Activity and Send The Arguments To Fragments
      */
     override fun build(context: FragmentActivity?): Intent {
@@ -124,6 +139,8 @@ object IssuerIntent : Intent(), IssuerIntentImplementation {
             this.putExtra(IssuerConsts.DEVICE_INFORMATION_MODE, deviceInformation.key)
             this.putExtra(IssuerConsts.SCREENS_MODE, screensMode.key)
             this.putExtra(IssuerConsts.OPTIONS_LIST_INFORMATION, optionsListInformation)
+            this.putExtra(IssuerConsts.EMAIL_TITLE, emailDialogTitle)
+            this.putExtra(IssuerConsts.EMAIL_MESSAGE, emailDialogMessage)
         }
     }
 

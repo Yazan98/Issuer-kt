@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="screen_title">Report a Problem</string>
+    <string name="hint_email">Enter Your Email Address</string>
+    <string name="email_message">Please Insert Your Email To Contact You For Any Required Steps</string>
+    <string name="email_title">User Email</string>
 </resources>
