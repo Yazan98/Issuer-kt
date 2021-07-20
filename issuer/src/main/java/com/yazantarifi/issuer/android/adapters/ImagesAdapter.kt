@@ -5,10 +5,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yazantarifi.android.android.R
+import com.yazantarifi.issuer.android.IssuerConfig
 import com.yazantarifi.issuer.android.holders.ImageHolder
 import com.yazantarifi.issuer.android.listeners.ImagesAdapterClickListener
 
-class ImagesAdapter constructor(private val clickListeners: ImagesAdapterClickListener) : RecyclerView.Adapter<ImageHolder>() {
+class ImagesAdapter constructor(private val clickListeners: ImagesAdapterClickListener) :
+    RecyclerView.Adapter<ImageHolder>() {
 
     companion object {
         const val ADD_IMAGE_TYPE = 1
@@ -34,21 +36,34 @@ class ImagesAdapter constructor(private val clickListeners: ImagesAdapterClickLi
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageHolder {
         if (viewType == IMAGE_TYPE) {
-            return ImageHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_image, null))
+            return ImageHolder(
+                LayoutInflater.from(parent.context).inflate(R.layout.item_image, null)
+            )
         } else if (viewType == ADD_IMAGE_TYPE) {
-            return ImageHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_image_add, null))
+            return ImageHolder(
+                LayoutInflater.from(parent.context).inflate(R.layout.item_image_add, null)
+            )
         } else {
-            return ImageHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_image, null))
+            return ImageHolder(
+                LayoutInflater.from(parent.context).inflate(R.layout.item_image, null)
+            )
         }
     }
 
     override fun onBindViewHolder(holder: ImageHolder, position: Int) {
-        if (position == itemCount - 1) {
-            holder.addImageContainer?.setOnClickListener {
-                clickListeners.onAddImageClicked()
+        try {
+            if (position == itemCount - 1) {
+                holder.addImageContainer?.setOnClickListener {
+                    clickListeners.onAddImageClicked()
+                }
+            } else {
+                holder.imagePath?.setImageDrawable(Drawable.createFromPath(items[position]))
+                holder.imagePath?.setOnClickListener {
+                    clickListeners.onImageClicked(items[position])
+                }
             }
-        } else {
-            holder.imagePath?.setImageDrawable(Drawable.createFromPath(items[position]))
+        } catch (ex: Exception) {
+            IssuerConfig.getGlobalListener()?.onErrorTriggered(ex)
         }
     }
 

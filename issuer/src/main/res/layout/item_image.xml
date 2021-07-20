@@ -7,6 +7,7 @@
         android:layout_width="150dp"
         android:orientation="vertical"
         android:layout_margin="10dp"
+        android:background="@drawable/add_image_border"
         android:gravity="center"
         android:layout_height="200dp">
 
@@ -14,6 +15,7 @@
             android:layout_width="match_parent"
             android:layout_gravity="center"
             android:id="@+id/imagePath"
+            android:scaleType="centerCrop"
             android:layout_height="match_parent" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>

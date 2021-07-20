@@ -5,6 +5,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ResolveInfo
+import android.database.Cursor
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -19,6 +20,21 @@ import kotlin.collections.ArrayList
 class ImagePickerContactResults: ActivityResultContract<Unit, Uri>() {
 
     private var photoUri: Uri? = null
+    companion object {
+        fun getRealPathFromURI(context: Context, contentURI: Uri): String? {
+            val result: String?
+            val cursor: Cursor? = context.contentResolver.query(contentURI, null, null, null, null)
+            if (cursor == null) {
+                result = contentURI.path
+            } else {
+                cursor.moveToFirst()
+                val idx: Int = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
+                result = cursor.getString(idx)
+                cursor.close()
+            }
+            return result
+        }
+    }
 
     override fun createIntent(context: Context, input: Unit?): Intent {
         return openImageIntent(context)

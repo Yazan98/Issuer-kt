@@ -37,7 +37,9 @@ class DirectIssueFragment : Fragment(R.layout.fragment_direct_issues), DirectIss
 
     private val imagesRequest = registerForActivityResult(ImagePickerContactResults()) { result ->
         imagesRecyclerView?.let {
-            (it.adapter as? ImagesAdapter)?.addImage(result.toString())
+            ImagePickerContactResults.getRealPathFromURI(requireContext(), result)?.let { it1 ->
+                (it.adapter as? ImagesAdapter)?.addImage(it1)
+            }
         }
     }
 
@@ -83,12 +85,12 @@ class DirectIssueFragment : Fragment(R.layout.fragment_direct_issues), DirectIss
                 this.visibility = View.VISIBLE
                 this.layoutManager = LinearLayoutManager(it, LinearLayoutManager.HORIZONTAL, false)
                 this.adapter = ImagesAdapter(object: ImagesAdapterClickListener {
-                    override fun onDeleteImageClicked(position: Int) {
-
-                    }
-
                     override fun onAddImageClicked() {
                         readStoragePermissionResult.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    }
+
+                    override fun onImageClicked(path: String?) {
+
                     }
                 })
             }
