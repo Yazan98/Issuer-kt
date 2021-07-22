@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.yazantarifi.android.android.R
 import com.yazantarifi.issuer.android.*
 import com.yazantarifi.issuer.android.adapters.ImagesAdapter
+import com.yazantarifi.issuer.android.data.IssueInfoType
 import com.yazantarifi.issuer.android.data.IssuerEvents
 import com.yazantarifi.issuer.android.impl.DirectIssueFragmentImplementation
 import com.yazantarifi.issuer.android.listeners.ImagesAdapterClickListener
@@ -85,6 +86,7 @@ class DirectIssueFragment : Fragment(R.layout.fragment_direct_issues), DirectIss
 
     override fun initCollectionInfo(arguments: Bundle) {
         val isInformationCollectionEnabled = arguments.getBoolean(IssuerConsts.IS_COLLECTED_INFORMATION_ENABLED, false) ?: false
+        val fullInfoText = arguments.getString(IssuerConsts.DEVICE_INFORMATION_MODE, "") ?: ""
         if (!isInformationCollectionEnabled) {
             return
         }
@@ -93,7 +95,11 @@ class DirectIssueFragment : Fragment(R.layout.fragment_direct_issues), DirectIss
         val deviceInfo = IssuerApplicationInformation(requireActivity().applicationContext)
         infoContainer?.visibility = View.VISIBLE
         infoText?.let {
-            it.text = deviceInfo.getDeviceInfo()
+            if (TextUtils.equals(fullInfoText, IssueInfoType.FULL.key)) {
+                it.text = deviceInfo.getFullTextInfo()
+            } else {
+                it.text = deviceInfo.getDeviceInfo()
+            }
         }
     }
 

@@ -9,4 +9,5 @@
     <string name="next">Next</string>
     <string name="collected_information">Collected Information</string>
     <string name="device_info">Device Information</string>
+    <string name="send">Send</string>
 </resources>

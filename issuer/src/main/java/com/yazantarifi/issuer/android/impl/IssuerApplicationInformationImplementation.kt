@@ -14,4 +14,6 @@ interface IssuerApplicationInformationImplementation {
 
     fun getApplicationName(): String
 
+    fun getFullTextInfo(): String
+
 }

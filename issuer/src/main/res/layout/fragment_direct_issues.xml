@@ -93,7 +93,7 @@
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:background="@color/purple_200"
-        android:text="@string/next"
+        android:text="@string/send"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

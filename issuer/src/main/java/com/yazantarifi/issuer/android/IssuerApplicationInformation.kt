@@ -12,7 +12,7 @@ class IssuerApplicationInformation constructor(
     override fun getAndroidVersion(): String {
         val release = Build.VERSION.RELEASE
         val sdkVersion = Build.VERSION.SDK_INT
-        return "Android SDK: $sdkVersion ($release)"
+        return " $sdkVersion ($release)"
     }
 
     override fun getDeviceName(): String {
@@ -46,7 +46,7 @@ class IssuerApplicationInformation constructor(
     }
 
     override fun getDeviceInfo(): String {
-        var s = "Device Info : "
+        var s = " Device Info : "
         s += "\n OS Version: " + System.getProperty("os.version") + "(" + Build.VERSION.INCREMENTAL + ")"
         s += "\n OS API Level: ${Build.VERSION.SDK_INT}"
         s += "\n Device: " + Build.DEVICE
@@ -58,6 +58,21 @@ class IssuerApplicationInformation constructor(
         val applicationInfo = context.applicationInfo
         val stringId = applicationInfo.labelRes
         return if (stringId == 0) applicationInfo.nonLocalizedLabel.toString() else context.getString(stringId)
+    }
+
+    override fun getFullTextInfo(): String {
+        var s = " Device Info : "
+        s += "\n Device ID: " + "(" + getDeviceId() + ")"
+        s += "\n Device Brand: " + "(" + Build.BRAND + ")"
+        s += "\n Device Manufacture: " + "(" + Build.MANUFACTURER + ")"
+        s += "\n Android Version: " + "(" + getAndroidVersion() + ")"
+        s += "\n OS Version: " + System.getProperty("os.version") + "(" + Build.VERSION.INCREMENTAL + ")"
+        s += "\n OS API Level: ${Build.VERSION.SDK_INT}"
+        s += "\n Device: " + Build.DEVICE
+        s += "\n Model (and Product): " + Build.MODEL + " (" + Build.PRODUCT + ")"
+        s += "\n Device Hardware: " + Build.HARDWARE
+        s += "\n Device Release Version: " + Build.VERSION.RELEASE
+        return s
     }
 
 }
