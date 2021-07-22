@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavGraph
 import androidx.navigation.findNavController
 import com.yazantarifi.android.android.R
+import com.yazantarifi.issuer.android.data.IssuerEvents
 import com.yazantarifi.issuer.android.data.IssuerResultBundle
 import com.yazantarifi.issuer.android.data.IssuesScreenMode
 import com.yazantarifi.issuer.android.impl.IssuerScreenImplementation
@@ -46,6 +47,8 @@ class IssuerScreen : AppCompatActivity(), IssuerScreenImplementation {
             initScreenTitle(it)
             setupStartScreen(it)
         }
+
+        IssuerConfig.sendEventName(IssuerEvents.ACTIVITY_VIEW, intent)
     }
 
     override fun setupStartScreen(extras: Bundle?) {
@@ -79,6 +82,7 @@ class IssuerScreen : AppCompatActivity(), IssuerScreenImplementation {
 
     override fun addStartFragmentArguments(graph: NavGraph?) {
         val privacyPolicyLink: String = intent?.extras?.getString(IssuerConsts.PRIVACY_POLICY_LINK, "") ?: ""
+        val privacyPolicyText: String = intent?.extras?.getString(IssuerConsts.PRIVACY_POLICY_TEXT, "") ?: ""
         val hintTextField: String = intent?.extras?.getString(IssuerConsts.TEXT_INPUT_HINT, "") ?: ""
         val deviceInformationMode: String = intent?.extras?.getString(IssuerConsts.DEVICE_INFORMATION_MODE, "") ?: ""
         val isEventsClickEnabled: Boolean = intent?.extras?.getBoolean(IssuerConsts.IS_EVENTS_CLICK_ENABLED, false) ?: false
@@ -87,6 +91,7 @@ class IssuerScreen : AppCompatActivity(), IssuerScreenImplementation {
         val isImageAttachmentEnabled: Boolean = intent?.extras?.getBoolean(IssuerConsts.IS_IMAGE_ATTACHMENT_ENABLED, false) ?: false
 
         graph?.addArgument(IssuerConsts.TEXT_INPUT_HINT, getStringArgument(hintTextField))
+        graph?.addArgument(IssuerConsts.PRIVACY_POLICY_TEXT, getStringArgument(privacyPolicyText))
         graph?.addArgument(IssuerConsts.PRIVACY_POLICY_LINK, getStringArgument(privacyPolicyLink))
         graph?.addArgument(IssuerConsts.DEVICE_INFORMATION_MODE, getStringArgument(deviceInformationMode))
 
@@ -138,11 +143,13 @@ class IssuerScreen : AppCompatActivity(), IssuerScreenImplementation {
     override fun showEmailDialogInput() {
         showEmailDialog(this, getEmailExtras(EMAIL_TITLE_KEY), getEmailExtras(EMAIL_MESSAGE_KEY), object : EmailSelectionListener {
                 override fun onEmailSelected(email: String?) {
+                    IssuerConfig.sendEventName(IssuerEvents.ISSUE_SCREEN_EMAIL_DIALOG_OK, intent)
                     screenResults?.setEmailResult(email)
                     finishScreen()
                 }
 
                 override fun onDialogDismissed() {
+                    IssuerConfig.sendEventName(IssuerEvents.ISSUE_SCREEN_EMAIL_DIALOG_DISMISS, intent)
                     finishScreen()
                 }
             })

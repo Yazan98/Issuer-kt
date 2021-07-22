@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btnClick)?.setOnClickListener {
             IssuerScreen.startScreen(this) {
                 IssuerIntent addDeviceInformationMode IssueInfoType.FULL
-                IssuerIntent addPrivacyPolicyInfo "Data Policy"
+                IssuerIntent addPrivacyPolicyInfo "Information About Your Device, and Data Policy Will Be Included In This Report, Please Specify Full Info And STR's About The Problem"
                 IssuerIntent addPrivacyPolicyLink "https://www.yazantarifi.com"
                 IssuerIntent addScreenTitle "Report Technical Problem"
                 IssuerIntent addScreensMode IssuesScreenMode.DIRECT_REPORT

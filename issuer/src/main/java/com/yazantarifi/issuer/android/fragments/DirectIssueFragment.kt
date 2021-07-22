@@ -1,25 +1,26 @@
 package com.yazantarifi.issuer.android.fragments
 
 import android.Manifest
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextUtils
-import android.text.TextWatcher
+import android.text.*
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yazantarifi.android.android.R
-import com.yazantarifi.issuer.android.ImagePickerContactResults
-import com.yazantarifi.issuer.android.IssuerConsts
-import com.yazantarifi.issuer.android.IssuerScreen
+import com.yazantarifi.issuer.android.*
 import com.yazantarifi.issuer.android.adapters.ImagesAdapter
+import com.yazantarifi.issuer.android.data.IssuerEvents
 import com.yazantarifi.issuer.android.impl.DirectIssueFragmentImplementation
 import com.yazantarifi.issuer.android.listeners.ImagesAdapterClickListener
-import com.yazantarifi.issuer.android.requestPermission
 import kotlinx.android.synthetic.main.fragment_direct_issues.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
 
 class DirectIssueFragment : Fragment(R.layout.fragment_direct_issues), DirectIssueFragmentImplementation {
 
@@ -46,6 +47,7 @@ class DirectIssueFragment : Fragment(R.layout.fragment_direct_issues), DirectIss
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initArguments()
+        IssuerConfig.sendEventName(IssuerEvents.ISSUE_SCREEN_VIEW, arguments)
     }
 
     override fun initArguments() {
@@ -56,17 +58,60 @@ class DirectIssueFragment : Fragment(R.layout.fragment_direct_issues), DirectIss
                 }
             }
 
+            it.getString(IssuerConsts.PRIVACY_POLICY_TEXT, "")?.let {
+                if (!TextUtils.isEmpty(it)) {
+                    privacyPolicyText?.text = it
+                }
+            }
+
+            it.getString(IssuerConsts.PRIVACY_POLICY_LINK, "")?.let { link ->
+                if (!TextUtils.isEmpty(link)) {
+                    privacyPolicyText?.setOnClickListener {
+                        openWebBrowser(link)
+                    }
+                }
+            }
+
             it.getBoolean(IssuerConsts.IS_IMAGE_ATTACHMENT_ENABLED, false)?.let {
                 when (it) {
                     true -> setupImagesRecyclerView()
                     false -> imagesRecyclerView?.visibility = View.GONE
                 }
             }
+
+            initCollectionInfo(it)
+        }
+    }
+
+    override fun initCollectionInfo(arguments: Bundle) {
+        val isInformationCollectionEnabled = arguments.getBoolean(IssuerConsts.IS_COLLECTED_INFORMATION_ENABLED, false) ?: false
+        if (!isInformationCollectionEnabled) {
+            return
+        }
+
+        IssuerConfig.sendEventName(IssuerEvents.ISSUE_SCREEN_COLLECT_DEVICE_INFO, arguments)
+        val deviceInfo = IssuerApplicationInformation(requireActivity().applicationContext)
+        infoContainer?.visibility = View.VISIBLE
+        infoText?.let {
+            it.text = deviceInfo.getDeviceInfo()
+        }
+    }
+
+    override fun openWebBrowser(link: String?) {
+        link?.let {
+            try {
+                IssuerConfig.sendEventName(IssuerEvents.ISSUE_SCREEN_PRIVACY_LINK_CLICK, arguments)
+                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
+                startActivity(browserIntent)
+            } catch (ex: Exception) {
+                IssuerConfig.getGlobalListener()?.onErrorTriggered(ex)
+            }
         }
     }
 
     override fun setupViewsListeners() {
         button?.setOnClickListener {
+            IssuerConfig.sendEventName(IssuerEvents.ISSUE_SCREEN_NEXT_OPTION, arguments)
             (activity as? IssuerScreen)?.finishScreen()
         }
 
@@ -75,6 +120,10 @@ class DirectIssueFragment : Fragment(R.layout.fragment_direct_issues), DirectIss
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
             override fun afterTextChanged(s: Editable?) {
                 (activity as? IssuerScreen)?.updateTextInput(s?.toString())
+                GlobalScope.launch {
+                    delay(3000)
+                    IssuerConfig.sendEventName(IssuerEvents.ISSUE_SCREEN_TEXT_INPUT_TYPE, arguments)
+                }
             }
         })
     }
@@ -86,6 +135,7 @@ class DirectIssueFragment : Fragment(R.layout.fragment_direct_issues), DirectIss
                 this.layoutManager = LinearLayoutManager(it, LinearLayoutManager.HORIZONTAL, false)
                 this.adapter = ImagesAdapter(object: ImagesAdapterClickListener {
                     override fun onAddImageClicked() {
+                        IssuerConfig.sendEventName(IssuerEvents.ISSUE_SCREEN_ADD_IMAGE_CLICK, arguments)
                         readStoragePermissionResult.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
                     }
 

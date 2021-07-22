@@ -7,4 +7,6 @@
     <string name="explain_problem">Please Explain the Problem Here</string>
     <string name="add_image">Add Image</string>
     <string name="next">Next</string>
+    <string name="collected_information">Collected Information</string>
+    <string name="device_info">Device Information</string>
 </resources>
