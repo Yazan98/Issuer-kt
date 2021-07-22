@@ -12,7 +12,6 @@ import com.google.android.material.textfield.TextInputEditText
 import com.yazantarifi.android.android.R
 import com.yazantarifi.issuer.android.listeners.EmailSelectionListener
 
-
 fun showEmailDialog(context: Context, title: String, message: String, listener: EmailSelectionListener) {
     val builder: AlertDialog.Builder = AlertDialog.Builder(context)
     builder.setTitle(title)

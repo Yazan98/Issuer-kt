@@ -46,8 +46,8 @@ class IssuerApplicationInformation constructor(
     }
 
     override fun getDeviceInfo(): String {
-        var s = " Device Info : "
-        s += "\n OS Version: " + System.getProperty("os.version") + "(" + Build.VERSION.INCREMENTAL + ")"
+        var s = ""
+        s += "OS Version: " + System.getProperty("os.version") + "(" + Build.VERSION.INCREMENTAL + ")"
         s += "\n OS API Level: ${Build.VERSION.SDK_INT}"
         s += "\n Device: " + Build.DEVICE
         s += "\n Model (and Product): " + Build.MODEL + " (" + Build.PRODUCT + ")"
@@ -61,8 +61,8 @@ class IssuerApplicationInformation constructor(
     }
 
     override fun getFullTextInfo(): String {
-        var s = " Device Info : "
-        s += "\n Device ID: " + "(" + getDeviceId() + ")"
+        var s = ""
+        s += "Device ID: " + "(" + getDeviceId() + ")"
         s += "\n Device Brand: " + "(" + Build.BRAND + ")"
         s += "\n Device Manufacture: " + "(" + Build.MANUFACTURER + ")"
         s += "\n Android Version: " + "(" + getAndroidVersion() + ")"

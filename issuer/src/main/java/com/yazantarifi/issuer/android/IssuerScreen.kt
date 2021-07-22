@@ -132,7 +132,7 @@ class IssuerScreen : AppCompatActivity(), IssuerScreenImplementation {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        finish()
+        onBackPressed()
         return super.onOptionsItemSelected(item)
     }
 

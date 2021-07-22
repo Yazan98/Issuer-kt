@@ -21,6 +21,7 @@ object IssuerConsts {
     const val EMAIL_TITLE = "extras.email.title"
     const val EMAIL_MESSAGE = "extras.email.message"
     const val TEXT_INPUT_HINT = "extras.text.hint"
+    const val SHOULD_SHOW_EMAIL_DIALOG = "extras.email.dialog"
 
     // Strings
     const val CONTEXT_NULL_EXCEPTION = "Context Is Required, Can't Be Null"

@@ -124,7 +124,7 @@ class DirectIssueFragment : Fragment(R.layout.fragment_direct_issues), DirectIss
             IssuerConfig.sendEventName(IssuerEvents.ISSUE_SCREEN_NEXT_OPTION, arguments)
             (activity as? IssuerScreen)?.let {
                 it.setImages((imagesRecyclerView?.adapter as? ImagesAdapter?)?.getAllImages())
-                it.finishScreen()
+                it.finish()
             }
         }
 
