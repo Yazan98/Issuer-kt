@@ -2,9 +2,15 @@ package com.yazantarifi.issuer.android.impl
 
 interface IssuerResultBundleImplementation {
 
-    fun setScreenResults(images: ArrayList<String>?, selectedOption: String?, userTextScreen: String?)
+    fun setImages(images: ArrayList<String>?)
+
+    fun getImages(): ArrayList<String>?
 
     fun setUserTextInput(textInput: String?)
+
+    fun getSystemInfoText(): String?
+
+    fun setSystemTextInfo(result: String?)
 
     fun getUserTextInput(): String?
 
@@ -16,7 +22,7 @@ interface IssuerResultBundleImplementation {
 
     fun getSelectedOption(): String?
 
-    fun getInformation() // OS, WIFI, etc
+    fun getInformation()
 
     fun getUserInputText(): String?
 

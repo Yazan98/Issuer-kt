@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.*
-import android.util.Log
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.Fragment
@@ -25,16 +24,13 @@ import kotlinx.coroutines.launch
 
 class DirectIssueFragment : Fragment(R.layout.fragment_direct_issues), DirectIssueFragmentImplementation {
 
-    companion object {
-        const val TAG = "DirectIssueFragment"
-    }
-
     private val readStoragePermissionResult: ActivityResultLauncher<String> by requestPermission(
         Manifest.permission.READ_EXTERNAL_STORAGE,
         granted = {
+            IssuerConfig.sendEventName(IssuerEvents.ON_PERMISSION_GENERATED, arguments)
             pickImagesFromGallery()
         }, denied = {
-            Log.d(TAG, "Denied")
+            IssuerConfig.sendEventName(IssuerEvents.ON_PERMISSION_DENIED, arguments)
         })
 
     private val imagesRequest = registerForActivityResult(ImagePickerContactResults()) { result ->
@@ -48,6 +44,7 @@ class DirectIssueFragment : Fragment(R.layout.fragment_direct_issues), DirectIss
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initArguments()
+        setupViewsListeners()
         IssuerConfig.sendEventName(IssuerEvents.ISSUE_SCREEN_VIEW, arguments)
     }
 
@@ -80,7 +77,11 @@ class DirectIssueFragment : Fragment(R.layout.fragment_direct_issues), DirectIss
                 }
             }
 
-            initCollectionInfo(it)
+            try {
+                initCollectionInfo(it)
+            } catch (ex: Exception) {
+                IssuerConfig.getGlobalListener()?.onErrorTriggered(ex)
+            }
         }
     }
 
@@ -95,11 +96,14 @@ class DirectIssueFragment : Fragment(R.layout.fragment_direct_issues), DirectIss
         val deviceInfo = IssuerApplicationInformation(requireActivity().applicationContext)
         infoContainer?.visibility = View.VISIBLE
         infoText?.let {
-            if (TextUtils.equals(fullInfoText, IssueInfoType.FULL.key)) {
-                it.text = deviceInfo.getFullTextInfo()
+            val textResults = if (TextUtils.equals(fullInfoText, IssueInfoType.FULL.key)) {
+                deviceInfo.getFullTextInfo()
             } else {
-                it.text = deviceInfo.getDeviceInfo()
+                deviceInfo.getDeviceInfo()
             }
+
+            (activity as? IssuerScreen)?.setSystemTextInfo(textResults)
+            it.text = textResults
         }
     }
 
@@ -116,9 +120,12 @@ class DirectIssueFragment : Fragment(R.layout.fragment_direct_issues), DirectIss
     }
 
     override fun setupViewsListeners() {
-        button?.setOnClickListener {
+        sendButton?.setOnClickListener {
             IssuerConfig.sendEventName(IssuerEvents.ISSUE_SCREEN_NEXT_OPTION, arguments)
-            (activity as? IssuerScreen)?.finishScreen()
+            (activity as? IssuerScreen)?.let {
+                it.setImages((imagesRecyclerView?.adapter as? ImagesAdapter?)?.getAllImages())
+                it.finishScreen()
+            }
         }
 
         textInputField?.addTextChangedListener(object: TextWatcher {

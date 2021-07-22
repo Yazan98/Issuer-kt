@@ -21,6 +21,10 @@ class ImagesAdapter constructor(private val clickListeners: ImagesAdapterClickLi
         ArrayList()
     }
 
+    fun getAllImages(): ArrayList<String> {
+        return items
+    }
+
     fun addImage(image: String) {
         this.items.add(image)
         notifyDataSetChanged()

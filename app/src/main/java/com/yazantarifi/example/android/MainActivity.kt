@@ -1,11 +1,16 @@
 package com.yazantarifi.example.android
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.TextView
+import com.yazantarifi.issuer.android.IssuerConsts
 import com.yazantarifi.issuer.android.IssuerIntent
 import com.yazantarifi.issuer.android.IssuerScreen
 import com.yazantarifi.issuer.android.data.IssueInfoType
+import com.yazantarifi.issuer.android.data.IssuerResultBundle
 import com.yazantarifi.issuer.android.data.IssuesScreenMode
 
 class MainActivity : AppCompatActivity() {
@@ -28,6 +33,20 @@ class MainActivity : AppCompatActivity() {
                 IssuerIntent isUserEmailSelectionEnabled true
                 IssuerIntent textInputHint "Brefly Explain What is The problem also Provide Us With Steps To ReProduce if Possible"
             }
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == IssuerConsts.RESULT_CODE) {
+            val images: ArrayList<String>? = data?.getStringArrayListExtra(IssuerResultBundle.IMAGES_PATHS)
+            val systemInfo: String? = data?.getStringExtra(IssuerResultBundle.APP_SYSTEM_INFO)
+            val textIssue: String? = data?.getStringExtra(IssuerResultBundle.USER_INPUT_TEXT)
+
+            findViewById<TextView>(R.id.textInput)?.text = "Text Input : $textIssue"
+            findViewById<TextView>(R.id.imagesPaths)?.text = "Images : ${images.toString()}"
+            findViewById<TextView>(R.id.systemInfo)?.text = "System Info : ${systemInfo}"
         }
     }
 

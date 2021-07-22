@@ -13,12 +13,20 @@ class IssuerResultBundle : Intent(), IssuerResultBundleImplementation {
         const val USER_INPUT_TEXT = "extras.text"
     }
 
-    override fun setScreenResults(
-        images: ArrayList<String>?,
-        selectedOption: String?,
-        userTextScreen: String?
-    ) {
+    override fun setSystemTextInfo(result: String?) {
+        this.putExtra(APP_SYSTEM_INFO, result)
+    }
 
+    override fun getSystemInfoText(): String? {
+        return this.getStringExtra(APP_SYSTEM_INFO)
+    }
+
+    override fun setImages(images: ArrayList<String>?) {
+        this.putStringArrayListExtra(IMAGES_PATHS, images)
+    }
+
+    override fun getImages(): ArrayList<String>? {
+        return this.getStringArrayListExtra(IMAGES_PATHS)
     }
 
     override fun setUserTextInput(textInput: String?) {

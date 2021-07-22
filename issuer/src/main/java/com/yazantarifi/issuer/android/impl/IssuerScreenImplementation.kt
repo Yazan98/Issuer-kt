@@ -17,6 +17,10 @@ interface IssuerScreenImplementation {
 
     fun isEmailDialogEnabled(): Boolean
 
+    fun setImages(items: ArrayList<String>?)
+
+    fun setSystemTextInfo(text: String?)
+
     fun updateTextInput(newText: String?)
 
     fun showEmailDialogInput()

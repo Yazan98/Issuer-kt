@@ -81,13 +81,13 @@
         android:padding="10dp"
         android:textColor="@color/image_color"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@+id/sendButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_gravity="center_horizontal" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/sendButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAllCaps="false"

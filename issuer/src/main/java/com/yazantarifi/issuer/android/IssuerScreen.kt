@@ -181,6 +181,14 @@ class IssuerScreen : AppCompatActivity(), IssuerScreenImplementation {
         }
     }
 
+    override fun setImages(items: ArrayList<String>?) {
+        this.screenResults?.setImages(items)
+    }
+
+    override fun setSystemTextInfo(text: String?) {
+        this.screenResults?.setSystemTextInfo(text)
+    }
+
     override fun finishScreen() {
         setResult(IssuerConsts.RESULT_CODE, screenResults)
         super.finish()

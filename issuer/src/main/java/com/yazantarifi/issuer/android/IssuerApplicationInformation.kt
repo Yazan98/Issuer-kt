@@ -72,6 +72,7 @@ class IssuerApplicationInformation constructor(
         s += "\n Model (and Product): " + Build.MODEL + " (" + Build.PRODUCT + ")"
         s += "\n Device Hardware: " + Build.HARDWARE
         s += "\n Device Release Version: " + Build.VERSION.RELEASE
+        s += "\n Network: " + getNetworkClass(context)
         return s
     }
 
