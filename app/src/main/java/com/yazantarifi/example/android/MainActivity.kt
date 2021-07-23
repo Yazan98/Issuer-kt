@@ -10,6 +10,7 @@ import com.yazantarifi.issuer.android.IssuerConsts
 import com.yazantarifi.issuer.android.IssuerIntent
 import com.yazantarifi.issuer.android.IssuerScreen
 import com.yazantarifi.issuer.android.data.IssueInfoType
+import com.yazantarifi.issuer.android.data.IssuerOption
 import com.yazantarifi.issuer.android.data.IssuerResultBundle
 import com.yazantarifi.issuer.android.data.IssuesScreenMode
 
@@ -18,6 +19,34 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.screen_main)
+        val options = ArrayList<IssuerOption>().apply {
+            val items = ArrayList<String>().apply {
+                this.add("Option 1")
+                this.add("Option 1")
+                this.add("Option 1")
+                this.add("Option 1")
+                this.add("Option 1")
+                this.add("Option 1")
+                this.add("Option 1")
+                this.add("Option 1")
+                this.add("Option 1")
+                this.add("Option 1")
+                this.add("Option 1")
+                this.add("Option 1")
+                this.add("Option 1")
+                this.add("Option 1")
+                this.add("Option 1")
+            }
+            this.add(IssuerOption("Title Here", items ))
+            this.add(IssuerOption("Title Here", items ))
+            this.add(IssuerOption("Title Here", items ))
+            this.add(IssuerOption("Title Here", items ))
+            this.add(IssuerOption("Title Here", items ))
+            this.add(IssuerOption("Title Here", items ))
+            this.add(IssuerOption("Title Here", items ))
+            this.add(IssuerOption("Title Here", items ))
+            this.add(IssuerOption("Title Here", items ))
+        }
 
         findViewById<Button>(R.id.btnClick)?.setOnClickListener {
             IssuerScreen.startScreen(this) {
@@ -25,13 +54,14 @@ class MainActivity : AppCompatActivity() {
                 IssuerIntent addPrivacyPolicyInfo "Information About Your Device, and Data Policy Will Be Included In This Report, Please Specify Full Info And STR's About The Problem"
                 IssuerIntent addPrivacyPolicyLink "https://www.yazantarifi.com"
                 IssuerIntent addScreenTitle "Report Technical Problem"
-                IssuerIntent addScreensMode IssuesScreenMode.DIRECT_REPORT
+                IssuerIntent addScreensMode IssuesScreenMode.FULL
                 IssuerIntent isCollectedInformationViewEnabled true
                 IssuerIntent isEventsClickEnabled true
                 IssuerIntent isImagesAttachmentEnabled true
                 IssuerIntent isPrivacyPolicyEnabled true
                 IssuerIntent isUserEmailSelectionEnabled true
                 IssuerIntent textInputHint "Brefly Explain What is The problem also Provide Us With Steps To ReProduce if Possible"
+                IssuerIntent addOptionsListInformation options
             }
         }
     }

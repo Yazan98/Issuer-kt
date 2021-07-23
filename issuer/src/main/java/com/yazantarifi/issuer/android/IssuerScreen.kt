@@ -9,16 +9,14 @@ import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavGraph
 import androidx.navigation.findNavController
 import com.yazantarifi.android.android.R
-import com.yazantarifi.issuer.android.data.IssuerEvents
-import com.yazantarifi.issuer.android.data.IssuerResultBundle
-import com.yazantarifi.issuer.android.data.IssuesScreenMode
+import com.yazantarifi.issuer.android.data.*
 import com.yazantarifi.issuer.android.impl.IssuerScreenImplementation
 import com.yazantarifi.issuer.android.listeners.EmailSelectionListener
 import kotlinx.android.synthetic.main.screen_issuer.*
 
 class IssuerScreen : AppCompatActivity(), IssuerScreenImplementation {
 
-    private val screenResults: IssuerResultBundle? by lazy {
+    val screenResults: IssuerResultBundle? by lazy {
         IssuerResultBundle()
     }
 
@@ -70,13 +68,14 @@ class IssuerScreen : AppCompatActivity(), IssuerScreenImplementation {
         try {
             findNavController(R.id.nav_host_fragment).let { controller ->
                 controller.navInflater.inflate(R.navigation.issuer_graph).let {
-                    it.startDestination = screenName
                     addStartFragmentArguments(it)
+                    it.startDestination = screenName
                     controller.graph = it
                 }
             }
         } catch (ex: Exception) {
             IssuerConfig.getGlobalListener()?.onErrorTriggered(ex)
+            finish()
         }
     }
 
@@ -89,8 +88,10 @@ class IssuerScreen : AppCompatActivity(), IssuerScreenImplementation {
         val isPrivacyPolicyEnabled: Boolean = intent?.extras?.getBoolean(IssuerConsts.IS_PRIVACY_POLICY_ENABLED, false) ?: false
         val isCollectedInfoEnabled: Boolean = intent?.extras?.getBoolean(IssuerConsts.IS_COLLECTED_INFORMATION_ENABLED, false) ?: false
         val isImageAttachmentEnabled: Boolean = intent?.extras?.getBoolean(IssuerConsts.IS_IMAGE_ATTACHMENT_ENABLED, false) ?: false
+        val options: ArrayList<IssuerOption>? = intent?.extras?.getParcelableArrayList(IssuerConsts.OPTIONS_LIST_INFORMATION)
 
         graph?.addArgument(IssuerConsts.TEXT_INPUT_HINT, getStringArgument(hintTextField))
+        graph?.addArgument(IssuerConsts.OPTIONS_LIST_INFORMATION, getObjectType(options))
         graph?.addArgument(IssuerConsts.PRIVACY_POLICY_TEXT, getStringArgument(privacyPolicyText))
         graph?.addArgument(IssuerConsts.PRIVACY_POLICY_LINK, getStringArgument(privacyPolicyLink))
         graph?.addArgument(IssuerConsts.DEVICE_INFORMATION_MODE, getStringArgument(deviceInformationMode))
@@ -145,12 +146,12 @@ class IssuerScreen : AppCompatActivity(), IssuerScreenImplementation {
                 override fun onEmailSelected(email: String?) {
                     IssuerConfig.sendEventName(IssuerEvents.ISSUE_SCREEN_EMAIL_DIALOG_OK, intent)
                     screenResults?.setEmailResult(email)
-                    finishScreen()
+                    setResult(IssuerConsts.RESULT_CODE, screenResults)
+                    finish()
                 }
 
                 override fun onDialogDismissed() {
                     IssuerConfig.sendEventName(IssuerEvents.ISSUE_SCREEN_EMAIL_DIALOG_DISMISS, intent)
-                    finishScreen()
                 }
             })
     }
@@ -189,17 +190,9 @@ class IssuerScreen : AppCompatActivity(), IssuerScreenImplementation {
         this.screenResults?.setSystemTextInfo(text)
     }
 
-    override fun finishScreen() {
-        setResult(IssuerConsts.RESULT_CODE, screenResults)
-        super.finish()
+    override fun setSelectedOption(option: String?) {
+        this.screenResults?.setSelectedOption(option)
     }
 
-    override fun finish() {
-        if (isEmailDialogEnabled()) {
-            showEmailDialogInput()
-        } else {
-            finishScreen()
-        }
-    }
 
 }

@@ -10,6 +10,7 @@ import androidx.navigation.NavArgument
 import androidx.navigation.NavType
 import com.google.android.material.textfield.TextInputEditText
 import com.yazantarifi.android.android.R
+import com.yazantarifi.issuer.android.data.IssuerOption
 import com.yazantarifi.issuer.android.listeners.EmailSelectionListener
 
 fun showEmailDialog(context: Context, title: String, message: String, listener: EmailSelectionListener) {
@@ -47,6 +48,13 @@ fun getBooleanArgument(value: Boolean): NavArgument {
     return NavArgument.Builder()
         .setDefaultValue(value)
         .setType(NavType.BoolType)
+        .build()
+}
+
+fun getObjectType(value:  ArrayList<IssuerOption>?): NavArgument {
+    return NavArgument.Builder()
+        .setDefaultValue(value?.toTypedArray())
+        .setType(NavType.ParcelableArrayType(IssuerOption::class.java))
         .build()
 }
 

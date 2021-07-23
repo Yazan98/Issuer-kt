@@ -12,18 +12,15 @@ interface IssuerResultBundleImplementation {
 
     fun setSystemTextInfo(result: String?)
 
+    fun setSelectedOption(option: String?)
+
     fun getUserTextInput(): String?
 
     fun setEmailResult(email: String?)
 
     fun getEmailResult(): String?
 
-    fun getImagesPaths(): ArrayList<String>?
-
     fun getSelectedOption(): String?
 
-    fun getInformation()
-
-    fun getUserInputText(): String?
 
 }

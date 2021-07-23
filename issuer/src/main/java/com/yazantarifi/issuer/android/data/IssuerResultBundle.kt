@@ -17,6 +17,10 @@ class IssuerResultBundle : Intent(), IssuerResultBundleImplementation {
         this.putExtra(APP_SYSTEM_INFO, result)
     }
 
+    override fun setSelectedOption(option: String?) {
+        this.putExtra(SELECTED_OPTION, option)
+    }
+
     override fun getSystemInfoText(): String? {
         return this.getStringExtra(APP_SYSTEM_INFO)
     }
@@ -45,20 +49,10 @@ class IssuerResultBundle : Intent(), IssuerResultBundleImplementation {
         return this.getStringExtra(EMAIL_PATH)
     }
 
-    override fun getImagesPaths(): ArrayList<String>? {
-        TODO("Not yet implemented")
-    }
 
     override fun getSelectedOption(): String? {
-        TODO("Not yet implemented")
+        return this.getStringExtra(SELECTED_OPTION)
     }
 
-    override fun getInformation() {
-        TODO("Not yet implemented")
-    }
-
-    override fun getUserInputText(): String? {
-        TODO("Not yet implemented")
-    }
 
 }

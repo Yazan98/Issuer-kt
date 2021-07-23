@@ -25,7 +25,7 @@ interface IssuerScreenImplementation {
 
     fun showEmailDialogInput()
 
-    fun finishScreen()
+    fun setSelectedOption(option: String?)
 
     fun getEmailExtras(key: Int): String
 

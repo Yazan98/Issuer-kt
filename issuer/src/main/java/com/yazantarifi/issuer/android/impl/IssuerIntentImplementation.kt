@@ -3,7 +3,7 @@ package com.yazantarifi.issuer.android.impl
 import android.content.Intent
 import androidx.fragment.app.FragmentActivity
 import com.yazantarifi.issuer.android.data.IssueInfoType
-import com.yazantarifi.issuer.android.data.IssuerOptionsInfo
+import com.yazantarifi.issuer.android.data.IssuerOption
 import com.yazantarifi.issuer.android.data.IssuesScreenMode
 
 interface IssuerIntentImplementation {
@@ -32,7 +32,7 @@ interface IssuerIntentImplementation {
 
     fun addScreensMode(flow: IssuesScreenMode)
 
-    fun addOptionsListInformation(options: IssuerOptionsInfo)
+    fun addOptionsListInformation(items: ArrayList<IssuerOption>)
 
     fun textInputHint(hint: String)
 

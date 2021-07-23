@@ -124,7 +124,12 @@ class DirectIssueFragment : Fragment(R.layout.fragment_direct_issues), DirectIss
             IssuerConfig.sendEventName(IssuerEvents.ISSUE_SCREEN_NEXT_OPTION, arguments)
             (activity as? IssuerScreen)?.let {
                 it.setImages((imagesRecyclerView?.adapter as? ImagesAdapter?)?.getAllImages())
-                it.finish()
+                if (it.isEmailDialogEnabled()) {
+                    it.showEmailDialogInput()
+                } else {
+                    it.setResult(IssuerConsts.RESULT_CODE, it.screenResults)
+                    it.finish()
+                }
             }
         }
 

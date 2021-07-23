@@ -3,13 +3,13 @@ package com.yazantarifi.issuer.android
 import android.content.Intent
 import androidx.fragment.app.FragmentActivity
 import com.yazantarifi.issuer.android.data.IssueInfoType
-import com.yazantarifi.issuer.android.data.IssuerOptionsInfo
+import com.yazantarifi.issuer.android.data.IssuerOption
 import com.yazantarifi.issuer.android.data.IssuesScreenMode
 import com.yazantarifi.issuer.android.impl.IssuerIntentImplementation
 
 object IssuerIntent : Intent(), IssuerIntentImplementation {
 
-    private var optionsListInformation: IssuerOptionsInfo? = null
+    private var optionsListInformation: ArrayList<IssuerOption>? = null
     private var screensMode: IssuesScreenMode = IssuesScreenMode.DIRECT_REPORT
     private var deviceInformation: IssueInfoType = IssueInfoType.FULL
     private var isUserEmailSelectionEnabled: Boolean = false
@@ -103,7 +103,7 @@ object IssuerIntent : Intent(), IssuerIntentImplementation {
      * Show Options List Inside Categories List
      * This List Can Be Options Only or Title, Options
      */
-    override infix fun addOptionsListInformation(options: IssuerOptionsInfo) {
+    override infix fun addOptionsListInformation(options: ArrayList<IssuerOption>) {
         this.optionsListInformation = options
     }
 
@@ -152,10 +152,10 @@ object IssuerIntent : Intent(), IssuerIntentImplementation {
             this.putExtra(IssuerConsts.SCREEN_TITLE_TEXT, screenTitle)
             this.putExtra(IssuerConsts.DEVICE_INFORMATION_MODE, deviceInformation.key)
             this.putExtra(IssuerConsts.SCREENS_MODE, screensMode.key)
-            this.putExtra(IssuerConsts.OPTIONS_LIST_INFORMATION, optionsListInformation)
             this.putExtra(IssuerConsts.EMAIL_TITLE, emailDialogTitle)
             this.putExtra(IssuerConsts.EMAIL_MESSAGE, emailDialogMessage)
             this.putExtra(IssuerConsts.TEXT_INPUT_HINT, textInputHint)
+            this.putParcelableArrayListExtra(IssuerConsts.OPTIONS_LIST_INFORMATION, optionsListInformation)
         }
     }
 
