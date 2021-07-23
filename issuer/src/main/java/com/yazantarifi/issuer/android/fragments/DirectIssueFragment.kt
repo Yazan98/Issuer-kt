@@ -4,7 +4,9 @@ import android.Manifest
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.text.*
+import android.text.Editable
+import android.text.TextUtils
+import android.text.TextWatcher
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.Fragment
@@ -22,7 +24,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-class DirectIssueFragment : Fragment(R.layout.fragment_direct_issues), DirectIssueFragmentImplementation {
+class DirectIssueFragment : Fragment(R.layout.fragment_direct_issues),
+    DirectIssueFragmentImplementation {
 
     private val readStoragePermissionResult: ActivityResultLauncher<String> by requestPermission(
         Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -34,9 +37,11 @@ class DirectIssueFragment : Fragment(R.layout.fragment_direct_issues), DirectIss
         })
 
     private val imagesRequest = registerForActivityResult(ImagePickerContactResults()) { result ->
-        imagesRecyclerView?.let {
-            ImagePickerContactResults.getRealPathFromURI(requireContext(), result)?.let { it1 ->
-                (it.adapter as? ImagesAdapter)?.addImage(it1)
+        if (result != null) {
+            imagesRecyclerView?.let {
+                ImagePickerContactResults.getRealPathFromURI(requireContext(), result)?.let { it1 ->
+                    (it.adapter as? ImagesAdapter)?.addImage(it1)
+                }
             }
         }
     }
@@ -86,7 +91,8 @@ class DirectIssueFragment : Fragment(R.layout.fragment_direct_issues), DirectIss
     }
 
     override fun initCollectionInfo(arguments: Bundle) {
-        val isInformationCollectionEnabled = arguments.getBoolean(IssuerConsts.IS_COLLECTED_INFORMATION_ENABLED, false) ?: false
+        val isInformationCollectionEnabled =
+            arguments.getBoolean(IssuerConsts.IS_COLLECTED_INFORMATION_ENABLED, false) ?: false
         val fullInfoText = arguments.getString(IssuerConsts.DEVICE_INFORMATION_MODE, "") ?: ""
         if (!isInformationCollectionEnabled) {
             return
@@ -133,8 +139,10 @@ class DirectIssueFragment : Fragment(R.layout.fragment_direct_issues), DirectIss
             }
         }
 
-        textInputField?.addTextChangedListener(object: TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+        textInputField?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) =
+                Unit
+
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
             override fun afterTextChanged(s: Editable?) {
                 (activity as? IssuerScreen)?.updateTextInput(s?.toString())
@@ -151,9 +159,12 @@ class DirectIssueFragment : Fragment(R.layout.fragment_direct_issues), DirectIss
             imagesRecyclerView?.apply {
                 this.visibility = View.VISIBLE
                 this.layoutManager = LinearLayoutManager(it, LinearLayoutManager.HORIZONTAL, false)
-                this.adapter = ImagesAdapter(object: ImagesAdapterClickListener {
+                this.adapter = ImagesAdapter(object : ImagesAdapterClickListener {
                     override fun onAddImageClicked() {
-                        IssuerConfig.sendEventName(IssuerEvents.ISSUE_SCREEN_ADD_IMAGE_CLICK, arguments)
+                        IssuerConfig.sendEventName(
+                            IssuerEvents.ISSUE_SCREEN_ADD_IMAGE_CLICK,
+                            arguments
+                        )
                         readStoragePermissionResult.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
                     }
 

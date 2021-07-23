@@ -2,10 +2,13 @@ package com.yazantarifi.example.android
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.SwitchCompat
 import com.yazantarifi.issuer.android.IssuerConsts
 import com.yazantarifi.issuer.android.IssuerIntent
 import com.yazantarifi.issuer.android.IssuerScreen
@@ -62,6 +65,13 @@ class MainActivity : AppCompatActivity() {
                 IssuerIntent isUserEmailSelectionEnabled true
                 IssuerIntent textInputHint "Brefly Explain What is The problem also Provide Us With Steps To ReProduce if Possible"
                 IssuerIntent addOptionsListInformation options
+            }
+        }
+
+        findViewById<SwitchCompat>(R.id.switchTheme)?.setOnClickListener { view ->
+            when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+                Configuration.UI_MODE_NIGHT_NO -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                Configuration.UI_MODE_NIGHT_YES -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             }
         }
     }
