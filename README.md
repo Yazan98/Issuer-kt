@@ -5,9 +5,18 @@ Android Library Built To Create Report Screen In Android Apps
 The Problem is Each Time you want to Track Device Info you should Ask Users To Provide Their Device Info but In This Screen the Screen Will Collect Device, System Information without Asking Users Too Much Info About The Device
 
 ## Installation
+
+#### Gradle
 ```
 dependencies {
     implementation "com.yazantarifi:issuer.android:1.0.1"
+}
+```
+
+#### Kotlin DSL
+```
+dependencies {
+    implementation("com.yazantarifi:issuer.android:1.0.1")
 }
 ```
 
